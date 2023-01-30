@@ -1,6 +1,11 @@
 import functions
 import PySimpleGUI as sg
 import time
+import os
+
+if not os.path.exists('todos.txt'):
+    with open('todos.txt', 'w') as file:
+        pass
 
 clock = sg.Text('', key='clock', background_color='#413F42', text_color='#E5E5CB', font="Helvetica 20 underline")
 label = sg.Text("Type in a to-do: ", background_color='#413F42', text_color='#E5E5CB')
@@ -45,7 +50,10 @@ while True:
                          font=('Helvetica', 20))
 
         case "todos":
-            window['todo'].update(value=values['todos'][0])
+            try:
+                window['todo'].update(value=values['todos'][0])
+            except IndexError:
+                continue
 
         case "Complete":
             try:
