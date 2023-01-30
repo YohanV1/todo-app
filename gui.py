@@ -25,22 +25,29 @@ window = sg.Window("To-Do Desktop",
                    font=('American typewriter', 20),
                    background_color='#413F42')
 
-todos = functions.get_todos()
-
 while True:
     event, values = window.read(timeout=200)
     window['clock'].update(value=time.strftime("%b %d, %Y %H:%M:%S"))
     match event:
-
         case "Add":
-            todos.append(values["todo"] + "\n")
+            todos = functions.get_todos()
+            if values["todo"] == "":
+                sg.popup("Enter a to-do to add.", font=('Helvetica', 20))
+                continue
+            todo_to_append = values["todo"].replace("\n", "")
+            if not todo_to_append.endswith("\n"):
+                todo_to_append = todo_to_append + "\n"
+            todos.append(todo_to_append)
             functions.write_todos(todos)
             window['todos'].update(values=todos)
+            window['todo'].update(value='')
 
         case "Edit":
             try:
+                todos = functions.get_todos()
                 todo_to_edit = values['todos'][0]
-                new_todo = values['todo'] + "\n"
+                new_todo = values['todo'].replace("\n", "")
+                new_todo = new_todo + "\n"
                 index = todos.index(todo_to_edit)
                 todos[index] = new_todo
                 functions.write_todos(todos)
@@ -57,6 +64,7 @@ while True:
 
         case "Complete":
             try:
+                todos = functions.get_todos()
                 todo_to_complete = values['todos'][0]
                 todos.remove(todo_to_complete)
                 functions.write_todos(todos)
