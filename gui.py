@@ -3,10 +3,6 @@ import PySimpleGUI as sg
 import time
 import os
 
-if not os.path.exists('todos.txt'):
-    with open('todos.txt', 'w') as file:
-        pass
-
 clock = sg.Text('', key='clock', background_color='#413F42', text_color='#E5E5CB', font="Helvetica 20 underline")
 label = sg.Text("Type in a to-do: ", background_color='#413F42', text_color='#E5E5CB')
 input_box = sg.InputText(tooltip="Enter to-do", key="todo", background_color='#BBBBBB')
